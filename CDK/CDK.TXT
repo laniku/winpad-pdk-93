@@ -1,0 +1,237 @@
+				 CDK.TXT
+
+   CDK Notes for Microsoft (R) Visual Basic (TM) Professional Edition
+
+				Version 2.00
+
+		  (C) Copyright Microsoft Corporation, 1992
+
+This document contains release notes for Microsoft Visual Basic for Windows
+Professional Edition Version 2.0. Information in this document is more
+current than that in the manuals or online Help.
+
+CDK Documentation Changes
+-------------------------
+Page    Section\Note
+----    ------------
+
+105     Packing Data into Bit Fields
+	----------------------------
+	The code fragment should use the value 0 rather than
+	OFFSETIN(MYCTL, enumLanguage). The OFFSETIN macro cannot be used
+	directly with a bit field. To use OFFSETIN with bit fields, place
+	the bit fields in a nested structure.  Then give the name of the
+	structure as an argument to the OFFSETIN macro.
+
+217     References to the DRAGDROP structure should be changed to
+	the DRAGINFO structure.
+
+248     Add Events to the Event List
+	----------------------------
+	The note should read:
+
+	For Visual Basic 2.0, adding events to the end of the event is
+	required.  You must not insert events into the middle of the
+	event list.  This is different from Visual Basic 1.0, which
+	requires events to be added in sorted order.
+
+VOID VBSetCapture(HCTL hctl)  [2.0]
+-----------------------------------
+Sets the mouse capture to hctl.  When a control has the mouse captured,
+all mouse input is directed to that control, regardless of whether the mouse
+pointer is over that control.  Only one control can have the mouse captured
+at a time.  Similar to Window's SetCapture() API.  See VBGetCapture, and
+VBReleaseCapture.
+
+VOID VBReleaseCapture(VOID)  [2.0]
+----------------------------------
+Releases the mouse capture and restores normal input processing.  This
+function should be called after VBSetCapture, when the control no longer
+wants all mouse input.  Similar to Window's ReleaseCapture() API.  See
+VBSetCapture, and VBGetCapture.
+
+VBM_SELECTED  [2.0]
+-------------------
+This message is sent to controls when they are selected and prior
+to being displayed in the Properties window.  You can use controls with
+this method to change any property related data prior to display, e.g.,
+updating the string providing list box items provided by npzEnumList to
+DT_ENUM properties.
+
+ wp         = MultiSelect ON (TRUE) or OFF (FALSE)
+
+VBM_SETPROPERTY
+---------------
+If VBDefControlProc processes this message, the text that is passed with the
+WM_SETTEXT message sets the 256th byte to NULL if the original text string
+is greater than 256 bytes.
+
+VBLinkMakeItemName(HCTL hctl, LPSZ lpszBuf)  [2.0]
+--------------------------------------------------
+This function adds control array indexes to the name passed in lpszBuf.
+For instance, if the lpszBuf contains the string "foo" and hctl is a control
+array element 3, lpszBuf contains "foo(3)" upon return from this function.
+If hctl is not a control array element, the string will remain "foo."
+Control developers must ensure that lpszBuf is sufficiently large to have
+appended a 7-character string.
+
+Printing 256-color Controls
+---------------------------
+In order for custom controls to print correctly, they cannot use the
+StretchBlt and BitBlt Windows API functions - these functions do not
+transfer color information correctly when displaying to a memory device
+context. Refer to the PIX sample for a alternative way of printing
+256-color controls.
+
+DT-HLSTR Properties and PF_fGetData
+------------------------------------
+DT_HLSTR properties cannot use PF_fGetData by itself.  They must also use
+PF_fGetMsg to avoid returning a NULL hlstr.  See the MyTag property in
+the PIX example (PIX.C) for a guide for how to property declare
+a hlstr property and process the VBM_GETPROPERTY message.
+
+DDE Enabled Controls need to have MODEL_fLoadMsg set
+-----------------------------------------------------
+All DDE-enabled controls need to have the MODEL_fLoadMsg flag
+set in the the controls MODEL structure so that the control gets
+VBM_LOADED and VBM_CREATED messages.
+
+Duplicate Custom Control Names
+------------------------------
+Each control class should be identified with a unique class name. Visual
+Basic does not register a control class if a class with that name is
+already loaded.
+
+Each .VBX file should be uniquely identified. If any two .VBX files (or
+other Windows DLLs) are defined with the same name in their respective
+module-definition files, then loading the second .VBX file in the same
+session of Windows causes Windows to use the first .VBX, even though the
+actual .VBX files may be completely different.
+
+For this reason, all .VBX files should be kept in one location, with
+their file names matching the name in the module-definition file. This
+way, two different .VBX files with the same name in the module-definition
+file cannot reside on the same system, because their file names would
+also have to be identical.
+
+For similar reasons, it's a good idea to uniquely identify each release
+of a custom control by indicating the release number in the module-
+definition file, as well as in the name of the .VBX file. For example, to
+indicate the first release of the PIX control, you could use a LIBRARY
+statement such as:
+
+    LIBRARY     PIX100
+
+It is also useful to append a company name to the front of the control name
+to distinguish it from similar controls shipped by different vendors.
+
+Custom Property of Type DT_HLSTR (which uses PF_fSetMsg)
+--------------------------------------------------------
+When a control receives a VBM_SETPROPERTY message for a custom property of
+type DT_HLSTR, then the lp parameter contains an hlstr which is to be the
+new value of the property.  However, the control does not own this hlstr,
+since it is owned by the caller of VBSetControlProperty. Hence, it cannot
+be directly used but rather must be copied (VBSetHlstr can be used for this
+purpose).  Also, one must NOT free this hlstr.  That is, you must not pass
+this hlstr to VBGetHlstr(), since this VB API has the side effect of
+freeing the hlstr passed in if it was a temp hlstr.  Also, you must not
+pass this hlstr to VBDestroyHlstr().
+
+See the PIX sample for an example of a DT_HLSTR property using PF_fSetMsg
+and PF_fGetMsg.
+
+New Layout for Custom Control Samples
+-------------------------------------
+The sample files are now made up of the following:
+
+   <name>.c
+   <name>.h
+   <name>.def
+   <name>.rc
+   <name>.vbx
+   <name>cu.bmp
+   <name>cd.bmp
+   <name>mu.bmp
+   <name>eu.bmp
+   makefile
+
+In some cases there may be an extra .h file.  This file is called
+<name>vb1.h and is used when creating a custom control with VB2-only
+features which should be loadable into VB1 as well (see Appendix A of the
+documentation)
+
+The makefile takes advantage of this structure so that when building a
+new custom control, the only line that must change in the makefile is
+the PRODUCT line.
+
+The contents of the CCINIT.C file are now been included in <name>.c so that
+there is only one source to modify.  The WEP code also been included in
+the <name>.c file.
+
+The LIBINIT.OBJ and LIBINIT.ASM files have been removed from the sample
+directories.  They are not required for C7 compilation.  Their equivalents,
+LIBENTRY.OBJ and LIBENTRY.ASM, are provided in the CDK directory; these are
+only required for C6 compilation.
+
+
+List of Included Samples
+------------------------
+The samples included with the CDK are:
+
+   CIRC1
+   CIRC2
+   CIRC3
+   CNTR
+   PAL
+   PIX
+   PUSH
+   XLIST
+
+CIRC1 and CIRC2
+---------------
+Similar to the CIRCLE samples shipped with VB1, but these are in the
+new format.  Also, the HWnd property and MODEL_nValueProp properties
+are defined in these controls; they are still loadable into both VB1
+and VB2.
+
+CIRC3
+-----
+Similar to CIRCLE3 of VB1.  This sample shows the following features:
+
+- How a control can export its model information so that
+  a loading application can read it without actually registering the class.
+
+- How a control can keep track of the number of instances of the VBX have
+  been registered and respond accordingly.
+
+- Includes the HelpContextID standard property, which is a new property for
+  VB2.  The control must thus use the technique described in Appendix B so
+  that it can be loaded by both VB1 and VB2.
+
+- HWnd property and MODEL_nValueProp defined
+
+CNTR
+----
+Similar to the sample shipped with VB1, but in the new format.  This
+control sets the MODEL_nValueProp field and exports the model
+information.
+
+PIX and PUSH
+------------
+Similar to the respective samples shipped with VB1, but these are in the
+new format.  In addition, these samples both define MODEL_nValueProp. They
+are both loadable into VB1 and VB2.  The PIX control contains 256-color
+support for both displaying and printing. PIX contains sample DDE code.
+
+PAL
+---
+This is a new sample for VB2.  It displays the use of the palette
+management features.  The sample shows how to prevent a control
+from being loaded into VB1.  The control also exports its model
+information.
+
+XLIST
+-----
+This is a new sample for VB2.  It displays the use of property
+arrays.  This sample also displays how to write a control which
+can be loaded into both VB1 and VB2.

@@ -1,0 +1,101 @@
+#----------------------------------------------------------------------------
+#	       Copyright (C) 1991-92, Microsoft Corporation
+#
+# You have a royalty-free right to use, modify, reproduce and distribute
+# the Sample Custom Control Files (and/or any modified version) in any way
+# you find useful, provided that you agree that Microsoft has no warranty,
+# obligation or liability for any Custom Control File.
+#----------------------------------------------------------------------------
+# Custom Control makefile
+#----------------------------------------------------------------------------
+
+.SUFFIXES:  .c .def .VBX .h .lnk .map .obj .rc .res .sym
+
+PRODUCT     = CIRC1
+DEBUG	    = 1
+#C6	    =
+
+Default: $(PRODUCT).VBX
+
+
+#----------------------------------------------------------------------------
+# Tools required
+#----------------------------------------------------------------------------
+CC	    = cl
+CVPACK	    = cvpack
+LINK	    = link
+MAPSYM	    = mapsym
+RC	    = rc
+SZSCRN	    = echo >con
+
+!ifdef C6
+OBJS	    = ..\libentry.obj
+CFLAGS2     = /Gw -Asnw
+!else
+CFLAGS2     = /GD -AS
+RCFLAGS2    = -30
+!endif
+
+
+#----------------------------------------------------------------------------
+# Flags
+#----------------------------------------------------------------------------
+!IF $(DEBUG)
+CFLAGS	    = /c /W4 /G2cs /Zip /BATCH /Od
+!ELSE
+CFLAGS	    = /c /W4 /G2cs /Zp	/BATCH /Osge
+!ENDIF
+
+LFLAGS	    = /co /align:16 /batch /far /li /map /nod /noe /nopackc /w
+
+
+#----------------------------------------------------------------------------
+# DEFAULT BUILD RULES
+#----------------------------------------------------------------------------
+.c.obj:
+    $(SZSCRN) Compiling $(<F)
+    $(CC) $(CFLAGS) $(CFLAGS2) $<
+
+
+#----------------------------------------------------------------------------
+# Dependencies
+#----------------------------------------------------------------------------
+$(PRODUCT).obj: $(PRODUCT).c $(PRODUCT).h
+
+$(PRODUCT).VBX: $(PRODUCT).obj $(PRODUCT).lnk $(PRODUCT).res $(PRODUCT).def
+    $(SZSCRN) Linking $(PRODUCT).VBX...
+    $(LINK) /co @$(PRODUCT).lnk
+!ifdef C6
+    $(SZSCRN) CVPACKing $(PRODUCT).VBX...
+    $(CVPACK) $(PRODUCT).VBX
+!endif
+    $(SZSCRN) RCing $(PRODUCT).VBX...
+    $(RC) $(RCFLAGS2) $(PRODUCT).res $(PRODUCT).VBX
+    $(SZSCRN) MAPSYMing $(PRODUCT).VBX...
+    $(MAPSYM) $(PRODUCT)
+    $(SZSCRN) Done Linking $(PRODUCT).VBX
+
+$(PRODUCT).lnk: makefile
+    $(SZSCRN) Making <<$(PRODUCT).lnk
+    $(OBJS) $(PRODUCT).obj
+    $(PRODUCT).VBX $(LFLAGS)
+    $(PRODUCT).map
+    vbapi.lib libw.lib sdllcew.lib
+    $(PRODUCT).def
+<<KEEP
+
+$(PRODUCT).res: $(PRODUCT).rc $(PRODUCT).h \
+	$(PRODUCT)cd.bmp \
+	$(PRODUCT)cu.bmp \
+	$(PRODUCT)mu.bmp \
+	$(PRODUCT)eu.bmp
+    $(SZSCRN) Resource compiling $(PRODUCT).RC
+    $(RC) -R $(RCINCS) $(PRODUCT).rc
+
+cln:
+    -del $(PRODUCT).obj
+    -del $(PRODUCT).res
+    -del $(PRODUCT).lnk
+    -del $(PRODUCT).vbx
+    -del $(PRODUCT).map
+    -del $(PRODUCT).sym

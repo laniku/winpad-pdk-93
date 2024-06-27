@@ -1,0 +1,22 @@
+//---------------------------------------------------------------------------
+//              Copyright (C) 1991-92, Microsoft Corporation
+//
+// You have a royalty-free right to use, modify, reproduce and distribute
+// the Sample Custom Control Files (and/or any modified version) in any way
+// you find useful, provided that you agree that Microsoft has no warranty,
+// obligation or liability for any Custom Control File.
+//---------------------------------------------------------------------------
+// Pal.rc
+//---------------------------------------------------------------------------
+
+#include "pal.h"
+#include "..\vbx.rcv"
+
+
+//---------------------------------------------------------------------------
+// Control resources for PAL control model
+//---------------------------------------------------------------------------
+IDBMP_PAL     BITMAP  DISCARDABLE "palcu.bmp"
+IDBMP_PALDOWN BITMAP  DISCARDABLE "palcd.bmp"
+IDBMP_PALMONO BITMAP  DISCARDABLE "palmu.bmp"
+IDBMP_PALEGA  BITMAP  DISCARDABLE "paleu.bmp"

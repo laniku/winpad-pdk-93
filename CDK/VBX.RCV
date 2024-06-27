@@ -1,0 +1,84 @@
+//---------------------------------------------------------------------------
+//		Copyright (C) 1991-92, Microsoft Corporation
+//
+// You have a royalty-free right to use, modify, reproduce and distribute
+// the Sample Custom Control Files (and/or any modified version) in any way
+// you find useful, provided that you agree that Microsoft has no warranty,
+// obligation or liability for any Custom Control File.
+//---------------------------------------------------------------------------
+// Vbx.rcv
+//---------------------------------------------------------------------------
+// This RC fragment defines version information.  It should be #include'd
+// into the component's main .RC file.
+//---------------------------------------------------------------------------
+
+#ifdef RC31
+//---------------------------------------------------------------------------
+// Ver.h defines constants needed by the VS_VERSION_INFO structure.
+//---------------------------------------------------------------------------
+#include <ver.h>
+
+
+//---------------------------------------------------------------------------
+// The following section defines values used in the version data structure
+// for all files, and which do not change.
+//---------------------------------------------------------------------------
+// Default is privatebuild, #define VER_OFFICALBUILD to get an official build.
+#ifndef VER_OFFICALBUILD
+#define VER_OFFICALBUILD	    | VS_FF_PRIVATEBUILD
+#endif
+
+// Default is prerelease, #define VER_RELEASE to get a release build.
+#ifndef VER_RELEASE
+#define VER_RELEASE		    | VS_FF_PRERELEASE
+#endif
+
+
+#ifdef RC_INVOKED
+//---------------------------------------------------------------------------
+// Now, actually define the resource.
+//---------------------------------------------------------------------------
+VS_VERSION_INFO 		    VERSIONINFO
+FILEVERSION			    VBX_VERSION
+PRODUCTVERSION			    VBX_VERSION
+FILEFLAGSMASK			    VS_FFI_FILEFLAGSMASK
+FILEFLAGS			    (0 VER_OFFICALBUILD VER_RELEASE)
+FILEOS				    VOS__WINDOWS16
+FILETYPE			    VFT_DLL
+FILESUBTYPE			    VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+	BEGIN
+	    VALUE "CompanyName",     VBX_COMPANYNAME
+	    VALUE "FileDescription", VBX_FILEDESCRIPTION
+	    VALUE "FileVersion",     VBX_VERSION_STR
+	    VALUE "InternalName",    VBX_INTERNALNAME
+	    VALUE "LegalCopyright",  "Copyright \251 Microsoft Corp. 1991-92\0"
+	    VALUE "LegalTrademarks", "Microsoft\256 is a registered trademark of Microsoft Corporation. Visual Basic\231 is a trademark of Microsoft Corporation. Windows\231 is a trademark of Microsoft Corporation.\0"
+	    VALUE "OriginalFilename",VBX_ORIGINALFILENAME
+	    VALUE "ProductName",     VBX_PRODUCTNAME
+	    VALUE "ProductVersion",  VBX_VERSION_STR
+        END
+    END
+
+    BLOCK "VarFileInfo"
+    BEGIN
+	//-------------------------------------------------------------------
+	// The following line should only be modified for localized versions.
+	// It consists of any number of WORD,WORD pairs, with each pair
+	// describing a language,codepage combination supported by the file.
+	//
+	// For example, a file might have values "0x409,1252" indicating that
+	// it supports English language (0x409) in the Windows ANSI codepage
+	// (1252).
+	//-------------------------------------------------------------------
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+#endif	// RC_INVOKED
+#endif	// RC31
+
+//---------------------------------------------------------------------------

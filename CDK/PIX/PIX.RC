@@ -1,0 +1,22 @@
+//---------------------------------------------------------------------------
+//              Copyright (C) 1991-92, Microsoft Corporation
+//
+// You have a royalty-free right to use, modify, reproduce and distribute
+// the Sample Custom Control Files (and/or any modified version) in any way
+// you find useful, provided that you agree that Microsoft has no warranty,
+// obligation or liability for any Custom Control File.
+//---------------------------------------------------------------------------
+// Pix.rc
+//---------------------------------------------------------------------------
+
+#include "pix.h"
+#include "..\vbx.rcv"
+
+
+//---------------------------------------------------------------------------
+// Control resources for PIX control model
+//---------------------------------------------------------------------------
+IDBMP_PIX          BITMAP  DISCARDABLE "pixcu.bmp"
+IDBMP_PIXDOWN      BITMAP  DISCARDABLE "pixcd.bmp"
+IDBMP_PIXMONO      BITMAP  DISCARDABLE "pixmu.bmp"
+IDBMP_PIXEGA       BITMAP  DISCARDABLE "pixeu.bmp"

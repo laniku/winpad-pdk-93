@@ -1,0 +1,38 @@
+//---------------------------------------------------------------------------
+//              Copyright (C) 1991-92, Microsoft Corporation
+//
+// You have a royalty-free right to use, modify, reproduce and distribute
+// the Sample Custom Control Files (and/or any modified version) in any way
+// you find useful, provided that you agree that Microsoft has no warranty,
+// obligation or liability for any Custom Control File.
+//---------------------------------------------------------------------------
+// Circ3.rc
+//---------------------------------------------------------------------------
+
+#include <windows.h>
+#include "circ3.h"
+#include "..\vbx.rcv"
+
+
+//---------------------------------------------------------------------------
+// Control resources for CIRCLE control model
+//---------------------------------------------------------------------------
+IDBMP_CIRCLE         BITMAP  DISCARDABLE "circ3cu.bmp"
+IDBMP_CIRCLEDOWN     BITMAP  DISCARDABLE "circ3cd.bmp"
+IDBMP_CIRCLEMONO     BITMAP  DISCARDABLE "circ3mu.bmp"
+IDBMP_CIRCLEEGA      BITMAP  DISCARDABLE "circ3eu.bmp"
+
+
+//---------------------------------------------------------------------------
+// Dialog to set flash color
+//---------------------------------------------------------------------------
+FlashDlg DIALOG LOADONCALL MOVEABLE DISCARDABLE 70, 18, 154, 94
+    STYLE   DS_MODALFRAME | WS_CAPTION | WS_SYSMENU | WS_POPUP
+    CAPTION "Flash Color"
+    {
+    CONTROL "OK",         DI_OK,      "button", BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD, 16, 73, 35, 14
+    CONTROL "Cancel",     DI_CANCEL,  "button", BS_PUSHBUTTON    | WS_TABSTOP | WS_CHILD, 88, 72, 36, 14
+    CONTROL "Red Color",  DI_REDOPT,  "button", BS_RADIOBUTTON   | WS_TABSTOP | WS_CHILD, 53, 10, 53, 12
+    CONTROL "Green Color",DI_GREENOPT,"button", BS_RADIOBUTTON   | WS_TABSTOP | WS_CHILD, 53, 30, 58, 12
+    CONTROL "Blue Color", DI_BLUEOPT, "button", BS_RADIOBUTTON   | WS_TABSTOP | WS_CHILD, 53, 50, 47, 12
+    }

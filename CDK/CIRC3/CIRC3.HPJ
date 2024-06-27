@@ -1,0 +1,15 @@
+[OPTIONS]
+TITLE = "CIRC3 Custom Control Help"
+MULTIKEY = C
+MULTIKEY = P
+MULTIKEY = V
+
+[FILES]
+CIRC3.RTF
+
+[MAP]
+CIRC3		10
+CircleShape     50
+FlashColor      60
+ClickIn 	70
+ClickOut        80

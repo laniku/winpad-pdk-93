@@ -1,0 +1,21 @@
+//---------------------------------------------------------------------------
+//		Copyright (C) 1991-92, Microsoft Corporation
+//
+// You have a royalty-free right to use, modify, reproduce and distribute
+// the Sample Custom Control Files (and/or any modified version) in any way
+// you find useful, provided that you agree that Microsoft has no warranty,
+// obligation or liability for any Custom Control File.
+//---------------------------------------------------------------------------
+// Circ2.rc
+//---------------------------------------------------------------------------
+
+#include "circ2.h"
+
+
+//---------------------------------------------------------------------------
+// Control resources for CIRCLE control model
+//---------------------------------------------------------------------------
+IDBMP_CIRCLE	     BITMAP  DISCARDABLE "circ2cu.bmp"
+IDBMP_CIRCLEDOWN     BITMAP  DISCARDABLE "circ2cd.bmp"
+IDBMP_CIRCLEMONO     BITMAP  DISCARDABLE "circ2mu.bmp"
+IDBMP_CIRCLEEGA      BITMAP  DISCARDABLE "circ2eu.bmp"
